@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { labesl 'demo'}
     
     stages {
         stage('Checkout git') {
