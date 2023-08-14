@@ -83,6 +83,6 @@ pipeline {
    //     buildSummary = "Job_name: ${env.JOB_NAME}\n Build_id: ${env.BUILD_ID} \n Status: *FAILURE*\n Build_url: ${BUILD_URL}\n Job_url: ${JOB_URL}\n  \n "
    //     slackSend( channel: "#devops", token: 'slack-token', color : "danger", message: "${buildSummary}")
    // }
-}
+//}
 
     
