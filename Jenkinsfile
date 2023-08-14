@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    tools { 
-        maven 'maven-3.8.6' 
-    }
     stages {
         stage('Checkout git') {
             steps {
@@ -49,11 +46,6 @@ pipeline {
       	        sh ' trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o report.html praveensirvi/sprint-boot-app:latest '
             }
         }
-        stage('Upload Scan report to AWS S3') {
-              steps {
-                  sh 'aws s3 cp report.html s3://devsecops-project/'
-              }
-         }
         stage('Docker  Push') {
             steps {
                 withVault(configuration: [skipSslVerification: true, timeout: 60, vaultCredentialId: 'vault-cred', vaultUrl: 'http://your-vault-server-ip:8200'], vaultSecrets: [[path: 'secrets/creds/docker', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
@@ -64,33 +56,33 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to k8s') {
-            steps {
-                script{
-                    kubernetesDeploy configs: 'spring-boot-deployment.yaml', kubeconfigId: 'kubernetes'
-                }
-            }
-        }
+       // stage('Deploy to k8s') {
+        //    steps {
+         //       script{
+          //          kubernetesDeploy configs: 'spring-boot-deployment.yaml', kubeconfigId: 'kubernetes'
+         //       }
+         //   }
+       // }
         
  
-    }
-    post{
-        always{
-            sendSlackNotifcation()
-            }
-        }
-}
+   // }
+    //post{
+      //  always{
+        //    sendSlackNotifcation()
+        //    }
+       // }
+//}
 
-def sendSlackNotifcation()
-{
-    if ( currentBuild.currentResult == "SUCCESS" ) {
-        buildSummary = "Job_name: ${env.JOB_NAME}\n Build_id: ${env.BUILD_ID} \n Status: *SUCCESS*\n Build_url: ${BUILD_URL}\n Job_url: ${JOB_URL} \n"
-        slackSend( channel: "#devops", token: 'slack-token', color: 'good', message: "${buildSummary}")
-    }
-    else {
-        buildSummary = "Job_name: ${env.JOB_NAME}\n Build_id: ${env.BUILD_ID} \n Status: *FAILURE*\n Build_url: ${BUILD_URL}\n Job_url: ${JOB_URL}\n  \n "
-        slackSend( channel: "#devops", token: 'slack-token', color : "danger", message: "${buildSummary}")
-    }
+//def sendSlackNotifcation()
+//{
+  //  if ( currentBuild.currentResult == "SUCCESS" ) {
+   //     buildSummary = "Job_name: ${env.JOB_NAME}\n Build_id: ${env.BUILD_ID} \n Status: *SUCCESS*\n Build_url: ${BUILD_URL}\n Job_url: ${JOB_URL} \n"
+    //    slackSend( channel: "#devops", token: 'slack-token', color: 'good', message: "${buildSummary}")
+    //}
+   // else {
+   //     buildSummary = "Job_name: ${env.JOB_NAME}\n Build_id: ${env.BUILD_ID} \n Status: *FAILURE*\n Build_url: ${BUILD_URL}\n Job_url: ${JOB_URL}\n  \n "
+   //     slackSend( channel: "#devops", token: 'slack-token', color : "danger", message: "${buildSummary}")
+   // }
 }
 
     
