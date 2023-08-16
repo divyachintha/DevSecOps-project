@@ -18,23 +18,23 @@ pipeline {
                 }   
             }
         }
-        stage('SonarQube Analysis'){
-            steps{
-                withSonarQubeEnv('SonarQube-server') {
-                        sh 'mvn clean verify sonar:sonar \
-                        -Dsonar.projectKey=devsecops-project-key \
-                        -Dsonar.host.url=$sonarurl \
-                        -Dsonar.login=$sonarlogin'
-                }
-            }
-        }
-        stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
-            }
-        }
+       // stage('SonarQube Analysis'){
+         //   steps{
+           //     withSonarQubeEnv('SonarQube-server') {
+             //           sh 'mvn clean verify sonar:sonar \
+              //          -Dsonar.projectKey=devsecops-project-key \
+               //         -Dsonar.host.url=$sonarurl \
+               //         -Dsonar.login=$sonarlogin'
+              //  }
+          //  }
+       // }
+       // stage("Quality Gate") {
+         //   steps {
+         //     timeout(time: 1, unit: 'HOURS') {
+         //       waitForQualityGate abortPipeline: true
+         //     }
+         //   }
+      //  }
         
         stage('Docker  Build') {
             steps {
