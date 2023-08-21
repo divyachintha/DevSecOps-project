@@ -53,9 +53,9 @@ pipeline {
                    }
             steps {
                 // withVault(configuration: [skipSslVerification: true, timeout: 60, vaultCredentialId: 'vault-cred', vaultUrl: 'http://your-vault-server-ip:8200'], vaultSecrets: [[path: 'secrets/creds/docker', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
-                  sh "docker login -u ${username} -p ${password} "
+                  //sh "docker login -u ${username} -p ${password} "
                  
-                    //sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
         
                     //sh 'docker push divyachintha/sprint-boot-app:v1.$BUILD_ID'
                     sh 'docker push divyachintha/sprint-boot-app:v1.$BUILD_ID'
