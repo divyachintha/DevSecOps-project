@@ -39,7 +39,7 @@ pipeline {
         stage('Docker  Build') {
             steps {
       	        sh 'docker build -t praveensirvi/sprint-boot-app:v1.$BUILD_ID .'
-                sh 'docker image tag praveensirvi/sprint-boot-app:v1.$BUILD_ID divyachintha/sprint-boot-app:latest'
+                sh 'docker image tag praveensirvi/sprint-boot-app:v1.$BUILD_ID divyachintha/sprint-boot-app:v1.$BUILD_ID'
             }
         }
         //stage('Image Scan') {
@@ -58,8 +58,8 @@ pipeline {
                     //sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
         
                     //sh 'docker push divyachintha/sprint-boot-app:v1.$BUILD_ID'
-                    sh 'docker push divyachintha/sprint-boot-app:latest'
-                    sh 'docker rmi praveensirvi/sprint-boot-app:v1.$BUILD_ID divyachintha/sprint-boot-app:latest'
+                    sh 'docker push divyachintha/sprint-boot-app:v1.$BUILD_ID'
+                    sh 'docker rmi praveensirvi/sprint-boot-app:v1.$BUILD_ID divyachintha/sprint-boot-app:v1.$BUILD_ID'
               //  }
             }
         }
