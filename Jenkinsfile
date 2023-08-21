@@ -48,19 +48,18 @@ pipeline {
          //   }
        // }
         stage('Docker  Push'){
-            environment {
-                DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-                   }
+            
             steps {
+                withDockerRegistry(credentialsId: '29596e34-6efa-4176-82b4-efd48eb70d5b', toolName: 'dockerhub', url: 'https://hub.docker.com/') {
                 // withVault(configuration: [skipSslVerification: true, timeout: 60, vaultCredentialId: 'vault-cred', vaultUrl: 'http://your-vault-server-ip:8200'], vaultSecrets: [[path: 'secrets/creds/docker', secretValues: [[vaultKey: 'username'], [vaultKey: 'password']]]]) {
                   //sh "docker login -u ${username} -p ${password} "
                  
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    //sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
         
                     //sh 'docker push divyachintha/sprint-boot-app:v1.$BUILD_ID'
                     sh 'docker push divyachintha/sprint-boot-app:v1.$BUILD_ID'
                     sh 'docker rmi praveensirvi/sprint-boot-app:v1.$BUILD_ID divyachintha/sprint-boot-app:v1.$BUILD_ID'
-              //  }
+                }
             }
         }
        stage('Deploy to k8s') {
